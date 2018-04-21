@@ -1,0 +1,51 @@
+apply plugin: 'kotlin'
+apply from: 'gitversion.gradle'
+apply from: 'findbugs.gradle'
+apply from: 'detekt.gradle'
+apply from: 'ktlint.gradle'
+apply from: 'bintray.gradle'
+
+buildscript {
+    ext.kotlin_version = '1.2.41'
+    ext.detekt_version = '1.0.0.RC7'
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "com.google.code.findbugs:annotations:2.0.2"
+    testCompile "junit:junit:4.12"
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+}
+
+compileKotlin {
+    kotlinOptions.allWarningsAsErrors = true
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+    classifier "sources"
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    from javadoc.destinationDir
+    classifier = 'javadoc'
+}
+
+// Needed for bintray
+project.artifacts {
+    archives sourceJar
+    archives javadocJar
+}
+

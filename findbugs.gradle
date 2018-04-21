@@ -1,0 +1,12 @@
+apply plugin: 'findbugs'
+
+findbugs {
+    excludeFilter = project.file('config/findbugs-filter.xml')
+}
+
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
