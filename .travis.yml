@@ -1,0 +1,11 @@
+services:
+- docker
+script:
+- >
+  docker run
+  -e "HOSTUID=`id -u`"
+  -e "HOSTGID=`id -g`"
+  -v "`pwd`:/work"
+  -v "$HOME:/home/hostuser"
+  -i -t wtanaka/alpine-37-uid-openjdk8-gradle-git
+  ./gradlew check

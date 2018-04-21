@@ -1,0 +1,17 @@
+buildscript{
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+
+    dependencies {
+        classpath "gradle.plugin.com.palantir.gradle.gitversion:gradle-git-version:0.10.1"
+    }
+}
+
+// Pull current git version into gradle variable
+// https://discuss.gradle.org/t/plugin/7508/2
+apply plugin: com.palantir.gradle.gitversion.GitVersionPlugin
+
+project.setVersion(gitVersion())

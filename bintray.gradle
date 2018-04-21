@@ -1,0 +1,103 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+    }
+}
+
+// https://discuss.gradle.org/t/plugin/7508/2
+apply plugin: com.jfrog.bintray.gradle.BintrayPlugin
+apply plugin: "maven-publish"
+
+project.ext["signing.keyId"] = '74B2DD02'
+project.ext["signing.password"] = System.getenv("GPG_PASSPHRASE") ?: ""
+project.ext["signing.secretKeyRingFile"] = file("../sec.gpg").absolutePath
+
+group = 'com.wtanaka'
+project.ext["artifactId"] = 'kotlin-sample'
+project.ext["websiteUrl"] = 'https://wtanaka.com/'
+project.ext["description"] = 'Sample Kotlin Project Layout'
+project.ext["githubuser"] = "wtanaka"
+project.ext["githubrepo"] = "streaming"
+
+def pomConfig = {
+    licenses {
+        license {
+            name "GNU General Public License, Version 3.0"
+            url "http://www.gnu.org/licenses/gpl-3.0.html"
+            distribution "repo"
+        }
+    }
+    developers {
+        developer {
+            id "wtanaka"
+            name "wtanaka.com"
+            email "wtanaka@yahoo.com"
+        }
+    }
+    scm {
+        connection "scm:git:git://github.com/" + project.ext['githubuser'] +
+                "/" + project.ext['githubrepo'] + ".git"
+        developerConnection "scm:git:ssh://github.com:" + project.ext['githubuser'] +
+                "/" + project.ext['githubrepo'] + ".git"
+        url "https://github.com/" + project.ext['githubuser'] +
+                "/" + project.ext['githubrepo'] + "/tree/master"
+    }
+}
+
+// Used for bintray
+publishing {
+    publications {
+        MyPublication(MavenPublication) {
+            from components.java
+
+            project.configurations.archives.allArtifacts.findAll({
+                it.classifier in (["sources", "javadoc"] as Set)
+            }).each({
+                artifact it
+            })
+
+            groupId project.group
+            artifactId project.ext['artifactId']
+            version project.version
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', project.ext['description'])
+                root.appendNode('name', project.group + '.' + project.ext['artifactId'])
+                root.appendNode('url', project.ext['websiteUrl'])
+                root.children().last() + pomConfig
+            }
+        }
+    }
+}
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+    publications = ['MyPublication']
+    publish = true
+    override = true
+    pkg {
+        repo = 'maven'
+        name = project.ext['artifactId']
+        userOrg = System.getenv('BINTRAY_USER')
+        desc = project.ext['description']
+        licenses = ["GPL-3.0"]
+        issueTrackerUrl = 'https://github.com/wtanaka/kotlin-sample/issues'
+        vcsUrl = 'https://github.com/wtanaka/kotlin-sample.git'
+        websiteUrl = project.ext['websiteUrl']
+        publicDownloadNumbers = true
+        version {
+            name = project.version
+            released = new Date()
+            gpg {
+                sign = true
+                // passphrase = ''
+            }
+        }
+    }
+}
+
