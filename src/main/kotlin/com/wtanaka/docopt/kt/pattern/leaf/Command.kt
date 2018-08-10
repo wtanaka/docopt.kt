@@ -49,8 +49,8 @@ internal class Command : Argument {
                 value is Value.AString && value.s == name
             }
             .map { (n, _) ->
-                Pair(n, Command(name, Value.TRUE))
+                n to Command(name, Value.TRUE)
             }
-        return (mainSeq + sequenceOf(Pair(null, null))).first()
+        return (mainSeq + sequenceOf(null to null)).first()
     }
 }

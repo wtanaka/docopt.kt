@@ -268,8 +268,8 @@ internal class Parser(private val usage: String) {
             var (_, tokens) = origTokens.move()
             val parseExpr = parseExpr(tokens, options)
             val pair = when (token) {
-                "(" -> Pair(")", Required(parseExpr.result))
-                "[" -> Pair("]", Optional(parseExpr.result))
+                "(" -> ")" to Required(parseExpr.result)
+                "[" -> "]" to Optional(parseExpr.result)
                 else -> throw AssertionError()
             }
             tokens = parseExpr.tokens

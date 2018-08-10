@@ -30,7 +30,7 @@ package com.wtanaka.docopt.kt
  * Exit in case user invoked program with incorrect arguments.
  */
 class DocoptExit internal constructor(
-    @Suppress("UNUSED_PARAMETER")
+    @Suppress("UNUSED_VARIABLE", "UNUSED_PARAMETER")
     status: Int,
     usage: String,
     message: String = ""

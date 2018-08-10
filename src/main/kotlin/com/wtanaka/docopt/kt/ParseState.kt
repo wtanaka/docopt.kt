@@ -36,5 +36,6 @@ import com.wtanaka.docopt.kt.pattern.leaf.Option
 internal data class ParseState<out T : Pattern>(
     internal val result: List<T>,
     internal val tokens: Tokens,
+    @Suppress("UNUSED_VARIABLE")
     private val options: List<Option>
 )
