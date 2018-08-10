@@ -4,6 +4,7 @@ apply from: 'findbugs.gradle'
 apply from: 'detekt.gradle'
 apply from: 'ktlint.gradle'
 apply from: 'bintray.gradle'
+apply from: 'maven.gradle'
 
 buildscript {
     ext.kotlin_version = '1.2.41'

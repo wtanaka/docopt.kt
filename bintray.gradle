@@ -14,7 +14,7 @@ apply plugin: "maven-publish"
 
 project.ext["signing.keyId"] = '74B2DD02'
 project.ext["signing.password"] = System.getenv("GPG_PASSPHRASE") ?: ""
-project.ext["signing.secretKeyRingFile"] = file("../sec.gpg").absolutePath
+project.ext["signing.secretKeyRingFile"] = file("sec.gpg").absolutePath
 
 group = 'com.wtanaka'
 project.ext["artifactId"] = 'docopt-kt'
@@ -23,6 +23,7 @@ project.ext["description"] = 'Docopt for Kotlin'
 project.ext["githubuser"] = "wtanaka"
 project.ext["githubrepo"] = "docopt.kt"
 
+apply from: 'pom.gradle'
 def pomConfig = {
     licenses {
         license {
@@ -41,7 +42,8 @@ def pomConfig = {
     scm {
         connection "scm:git:git://github.com/" + project.ext['githubuser'] +
                 "/" + project.ext['githubrepo'] + ".git"
-        developerConnection "scm:git:ssh://github.com:" + project.ext['githubuser'] +
+        developerConnection "scm:git:ssh://github.com:" +
+                project.ext['githubuser'] +
                 "/" + project.ext['githubrepo'] + ".git"
         url "https://github.com/" + project.ext['githubuser'] +
                 "/" + project.ext['githubrepo'] + "/tree/master"

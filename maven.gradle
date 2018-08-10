@@ -1,0 +1,85 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        // Releasing to Maven Central from Gradle without dealing with
+        // Nexus UI
+        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.11.0"
+    }
+}
+
+apply plugin: io.codearte.gradle.nexus.NexusStagingPlugin
+// Upload to Sonatype for Maven Central
+apply plugin: 'maven'
+// Signing required for Sonatype Maven Central Direct Upload
+apply plugin: 'signing'
+
+project.ext["signing.keyId"] = '74B2DD02'
+project.ext["signing.password"] = System.getenv("GPG_PASSPHRASE") ?: ""
+project.ext["signing.secretKeyRingFile"] = file("/tmp/sec.gpg").absolutePath
+
+group = 'com.wtanaka'
+project.ext["artifactId"] = 'docopt-kt'
+project.ext["websiteUrl"] = 'https://wtanaka.com/'
+project.ext["description"] = 'Docopt for Kotlin'
+project.ext["githubuser"] = "wtanaka"
+project.ext["githubrepo"] = "docopt.kt"
+
+apply from: 'pom.gradle'
+
+uploadArchives {
+   repositories {
+      mavenDeployer {
+         beforeDeployment {
+            MavenDeployment deployment -> signing.signPom(deployment)
+         }
+
+         repository(url:
+            "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+            authentication(userName: System.getenv('OSSRH_USER'),
+                  password: System.getenv('OSSRH_PASSWORD'))
+         }
+
+         snapshotRepository(url:
+            "https://oss.sonatype.org/content/repositories/snapshots/") {
+            authentication(userName: System.getenv('OSSRH_USER'),
+                  password: System.getenv('OSSRH_PASSWORD'))
+         }
+
+         pom.project {
+            name 'com.wtanaka.beam'
+            packaging 'jar'
+            artifactId 'beam'
+            description 'Apache Beam Utility Code'
+            url 'https://wtanaka.com/beam'
+
+            scm {
+               connection "scm:git:git://github.com/wtanaka/streaming.git"
+               developerConnection "scm:git:ssh://github.com:wtanaka/streaming.git"
+               url "https://github.com/wtanaka/streaming/tree/master"
+            }
+
+            licenses {
+               license {
+                  name "GNU General Public License, Version 3.0"
+                  url "http://www.gnu.org/licenses/gpl-3.0.html"
+                  distribution "repo"
+               }
+            }
+
+            developers {
+               developer {
+                  id "wtanaka"
+                  name "wtanaka.com"
+                  email "wtanaka@yahoo.com"
+               }
+            }
+         }
+      }
+   }
+}
+
+nexusStaging {
+}
