@@ -7,7 +7,7 @@ apply from: 'bintray.gradle'
 
 buildscript {
     ext.kotlin_version = '1.2.41'
-    ext.detekt_version = '1.0.0.RC7'
+    ext.detekt_version = '1.0.0.RC8'
 
     repositories {
         mavenCentral()

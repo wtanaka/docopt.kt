@@ -49,11 +49,15 @@ internal class Option(
         Option(short, long, argcount, newValue)
 
     override fun singleMatch(left: List<LeafPattern>): Pair<Int?,
-        LeafPattern?> = (left.mapIndexed { n, pattern ->
-        Pair<Int?, LeafPattern?>(n, pattern)
+        LeafPattern?> = (left.mapIndexed { n: Int?, pattern: LeafPattern? ->
+        // Pair<Int?, LeafPattern?>(n, pattern)
+        n to pattern
     }.filter {
         name == it.second?.name
-    } + listOf(Pair<Int?, LeafPattern?>(null, null))).first()
+    } + listOf(
+        // Pair<Int?, LeafPattern?>(null, null)
+        null to null
+    )).first()
 
     internal companion object {
         /**

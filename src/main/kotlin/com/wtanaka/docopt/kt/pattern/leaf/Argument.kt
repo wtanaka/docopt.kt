@@ -40,10 +40,10 @@ internal open class Argument : LeafPattern {
         val mainSeq = left
             .withIndex()
             .filter { it.value is Argument }
-            .map { (n, pattern) -> Pair(n, Argument(name, pattern.value)) }
+            .map { (n, pattern) -> n to Argument(name, pattern.value) }
             .asSequence()
         val defaultReturn: Sequence<Pair<Int?, LeafPattern?>> =
-            sequenceOf(Pair(null, null))
+            sequenceOf(null to null)
         return (mainSeq + defaultReturn).first()
     }
 
