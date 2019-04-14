@@ -14,7 +14,7 @@ apply plugin: "maven-publish"
 
 project.ext["signing.keyId"] = '74B2DD02'
 project.ext["signing.password"] = System.getenv("GPG_PASSPHRASE") ?: ""
-project.ext["signing.secretKeyRingFile"] = file("sec.gpg").absolutePath
+project.ext["signing.secretKeyRingFile"] = file("/tmp/sec.gpg").absolutePath
 
 group = 'com.wtanaka'
 project.ext["artifactId"] = 'docopt-kt'
