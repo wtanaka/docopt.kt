@@ -15,7 +15,7 @@ jobs:
              wtanaka/alpine-37-uid-openjdk8-gradle-git
              ./gradlew check'
 #before_install:
-#- openssl aes-256-cbc -K $encrypted_693767ad98dc_key -iv $encrypted_693767ad98dc_iv -in sec.pgp.enc -out /tmp/sec.gpg -d
+#- openssl aes-256-cbc -K $encrypted_693767ad98dc_key -iv $encrypted_693767ad98dc_iv -in sec.pgp.enc -out sec.gpg -d
 #deploy:
 #- provider: script
 #  script: git fetch --all; ./gradlew bintrayUpload uploadArchives closeAndReleaseRepository
