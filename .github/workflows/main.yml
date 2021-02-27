@@ -12,7 +12,7 @@ jobs:
              -e "HOSTGID=`id -g`"
              -v "`pwd`:/work"
              -v "$HOME:/home/hostuser"
-             wtanaka/alpine-37-uid-openjdk8-gradle-git
+             cliwrap/openjdk8-gradle-git
              ./gradlew check'
 #before_install:
 #- openssl aes-256-cbc -K $encrypted_693767ad98dc_key -iv $encrypted_693767ad98dc_iv -in sec.pgp.enc -out /tmp/sec.gpg -d
