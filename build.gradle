@@ -25,7 +25,7 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "com.google.code.findbugs:annotations:3.0.1"
-    testCompile "junit:junit:4.13"
+    testCompile "junit:junit:4.13.2"
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
 }
